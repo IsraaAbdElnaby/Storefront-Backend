@@ -1,1 +1,5 @@
-CREATE TABLE orders (id SERIAL PRIMARY KEY, order_status VARCHAR(50), product_id integer, order_quantity integer);
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id integer,
+    complete boolean
+);
