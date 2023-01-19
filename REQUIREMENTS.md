@@ -5,38 +5,43 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show
-- Create [token required]
+- Index: /products [GET]
+- Show: /products/:id [GET]
+- Create [token required]: /products [POST] 
 - [OPTIONAL] Top 5 most popular products 
 - [OPTIONAL] Products by category (args: product category)
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [token required]: /users [GET]
+- Show [token required]: /users/:userID [GET]
+- Create N[token required]: /users [POST]
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+  // mmkn hna n-check lw fe order tany el status bta3to "active" n-throw error
+- Current Order by user (args: user id)[token required]: users/:userID/orders [GET]  //to be available for user and admin
+- [OPTIONAL] Completed Orders by user (args: user id)[token required] #same as above with checking status is complete
 
 ## Data Shapes
 #### Product
 -  id
 - name
 - price
-- [OPTIONAL] category
+- [OPTIONAL] category //could be implemented as enum
 
 #### User
 - id
 - firstName
 - lastName
+- username
 - password
 
 #### Orders
 - id
-- id of each product in the order
-- quantity of each product in the order
 - user_id
 - status of order (active or complete)
 
+#### Order Products
+- id
+- order_id
+- product_id
+- quantity of each product in the order
