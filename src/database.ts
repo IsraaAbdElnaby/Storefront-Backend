@@ -7,15 +7,29 @@ dotenv.config();
 const {
     POSTGRES_HOST,
     POSTGRES_DB,
+    POSTGRES_DB_TEST,
     POSTGRES_USER,
-    POSTGRES_PASSWORD
+    POSTGRES_PASSWORD,
+    NODE_ENV
 } = process.env
 
-const pool = new Pool ({  //set of connections to the DB
+let pool = new Pool();
+
+if(NODE_ENV  === "dev") {
+    pool = new Pool({  //set of connections to the DB
     host: POSTGRES_HOST,
     database: POSTGRES_DB,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD
 })
+} else if(NODE_ENV === "test"){
+    pool = new Pool({  //set of connections to the DB
+        host: POSTGRES_HOST,
+        database: POSTGRES_DB_TEST,
+        user: POSTGRES_USER,
+        password: POSTGRES_PASSWORD
+    })
+}
+
 
 export default pool;
