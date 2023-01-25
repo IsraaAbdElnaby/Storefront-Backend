@@ -1,8 +1,11 @@
 import  pool  from "../database";
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const pepper = process.env.BCRYPT_PASSWORD;
-const saltRounds = process.env.SALT_ROUNDSL;
+const saltRounds = process.env.SALT_ROUNDS;
 
 export type User = {
     id: Number;
@@ -38,7 +41,37 @@ export class UserEntity {
             con.release();
             return user;
         } catch(err) {
-            throw new Error (`Couldn't add new user ${u.firstname}`)
+            throw new Error (`Couldn't add new user (${u.firstName}):${err}`)
         }
     }
+
+    async authenticate(username: string, password: string): Promise<User|null> {
+        const con = await pool.connect(); //connect to the DB
+        const qry = "SELECT password FROM users WHERE username=($1)";
+        const result = await con.query(qry);  //stores the resulting rows from the DB query
+        con.release();
+        if (result.rows.length) {
+            const user = result.rows[0];
+            console.log(user);
+
+            if(bcrypt.compareSync(password+pepper, user.password)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+
+    async show(u: User): Promise<User> {
+        try{
+            const con = await pool.connect();
+            const qry = "SELECT * FROM users WHERE id=($1)";
+            const result = await con.query(qry, [u.id]);
+            con.release();
+            return result.rows[0];
+        } catch (err){
+            throw new Error(`Something went wrong! couldn't find user ${u.id}. ${(err as Error).message}`);
+        }
+    }
+
 }
