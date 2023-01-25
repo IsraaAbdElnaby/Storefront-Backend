@@ -19,6 +19,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 #### Orders
   // mmkn hna n-check lw fe order tany el status bta3to "active" n-throw error
 - Current Order by user (args: user id)[token required]: users/:userID/orders [GET]  //to be available for user and admin
+- Create [token required]: /orders [POST]
+- addProducts [token required]: /orders/:id/products
 - [OPTIONAL] Completed Orders by user (args: user id)[token required] #same as above with checking status is complete
 
 ## Data Shapes
